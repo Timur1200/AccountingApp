@@ -20,6 +20,11 @@
                 <Button Click="AddClick" Content="Создать" />
                 <Button Click="EditClick" Content="Изменить" />
                 <Button Click="DelClick" Content="Уволить/Вернуть"  />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Поиск:" /> 
+                    <TextBox Name="TBoxSearch" TextChanged="TextBox_TextChanged" Width="185" />
+                </StackPanel>
+                
 
 
             </StackPanel>

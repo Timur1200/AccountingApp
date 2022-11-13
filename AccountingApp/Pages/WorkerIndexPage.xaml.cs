@@ -26,10 +26,13 @@ namespace AccountingApp.Pages
         {
             InitializeComponent();
         }
+        private List<УчетСотрудников> _list;
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            DGridClient.ItemsSource = AccountantEntitiesContext.GetContext().УчетСотрудников.ToList();
+            _list = AccountantEntitiesContext.GetContext().УчетСотрудников.ToList();
+            DGridClient.ItemsSource = _list;
         }
+
         private void AddClick(object sender, RoutedEventArgs e)
         {
             PageNavigator.Frame.Navigate(new WorkerAddEditPage(null));
@@ -41,7 +44,7 @@ namespace AccountingApp.Pages
                 УчетСотрудников worker = DGridClient.SelectedItem as УчетСотрудников;
                 worker.Статус = !(worker.Статус);
                 AccountantEntitiesContext.GetContext().SaveChanges();
-                
+
             }
             PageLoaded(null, null);
         }
@@ -50,6 +53,17 @@ namespace AccountingApp.Pages
             PageNavigator.Frame.Navigate(new WorkerAddEditPage(null));
         }
 
-       
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TBoxSearch.Text == "")
+            {
+                PageLoaded(null, null);
+                return;
+            }
+            string text = TBoxSearch.Text.ToLower();
+            var list = _list.Where(q => q.Фио.ToLower().Contains(text) 
+            || q.Должность.Имя.ToLower().Contains(text));
+            DGridClient.ItemsSource = list;
+        }
     }
 }
